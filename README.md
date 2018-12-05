@@ -1,21 +1,5 @@
-# dashboard
+# Dashboard
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
+A dashboard for touch screen displays that shows the time and date, as well as
+upcoming calendar events for the coming days, and has buttons for controlling
+connected lights. Designed to be used in conjunction with [Home Manager](https://github.com/Lightning3105/home_manager "Home Manager")
