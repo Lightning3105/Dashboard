@@ -1,62 +1,85 @@
 <template>
-	<div id="app">
-		<img class="background" src="./assets/background.jpg"/>
-		<div class="shade"></div>
-		<schedule></schedule>
-		<actions></actions>
-		<messages></messages>
-		<Clock/>
+	<div id="app" ref="app">
+		<dashboard id="dash"></dashboard>
+		<!--camera id="cam"></camera-->
 	</div>
 </template>
 
 <script>
-import Clock from './components/Clock.vue'
-import Schedule from './components/Schedule.vue'
-import Actions from './components/Actions.vue'
-import Messages from './components/Messages.vue'
+	import Dashboard from './screens/Dashboard.vue'
+	import Camera from './screens/Camera.vue'
 
+	export default {
+		name: "app",
+		components: {
+			Dashboard,
+			Camera
+		},
+		data() {
+			return {
+				lastScroll: 0,
+				scrolling: false
+			}
+		},
+		computed: {
+			screenSize () {
+				return {x: screen.width, y: screen.height}
+			}
+		},
+		methods: {
+			onScroll (event){
+				if (this.scrolling){
+					return
+				}
+				let current = document.documentElement.scrollTop
+				if (current === this.lastScroll){
+					return
+				}
+				if (current > this.lastScroll){
+					document.documentElement.scroll({
+						top: 534,
+						left: 0,
+						behavior: 'smooth'
+					});
+					this.lastScroll = 534
+				}
+				else {
+					document.documentElement.scroll({
+						top: 0,
+						left: 0,
+						behavior: 'smooth'
+					});
+					this.lastScroll = 0
+				}
 
-export default {
-	name: 'app',
-	components: {
-	Clock, Schedule, Actions, Messages
-	},
-	methods: {
-
+				this.scrolling = true
+				setTimeout(() => {this.scrolling = false; this.onScroll()}, 1000)
+			}
+		},
+		created () {
+			//window.addEventListener('scroll', this.onScroll);
+		},
+		destroyed () {
+			window.removeEventListener('scroll', this.onScroll);
+		}
 	}
-}
 </script>
 
 <style lang="scss">
-@import '../node_modules/roboto-fontface/css/roboto/roboto-fontface.css';
+	@import '../node_modules/roboto-fontface/css/roboto/roboto-fontface.css';
 
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+	#app {
+		font-family: 'Avenir', Helvetica, Arial, sans-serif;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		text-align: center;
+		color: #2c3e50;
+	}
 
-body, html {height:100%;}
+	body, html {height:100%;}
 
-body {
-  margin: 0;
-  /*overflow: hidden;*/
-}
-
-.background {
-  object-fit: cover;
-  height: 100vh;
-  width: 100vw;
-	position: fixed;
-	left: 0;
-}
-
-	.shade {
-		position: absolute;
-		height: 100%;
-		width: 100%;
-		background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 20%, rgba(0, 212, 255, 0) 60%);
+	body {
+		margin: 0;
+		/*overflow: hidden;*/
 	}
 </style>

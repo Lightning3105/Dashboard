@@ -3,7 +3,7 @@ import App from './App.vue'
 
 Vue.config.productionTip = false
 
-window.APIROOT = 'http://192.168.1.6/api'
+window.APIROOT = 'http://192.168.1.6/api' //'http://192.168.1.4:4000/api'
 
 import 'vue-awesome/icons'
 

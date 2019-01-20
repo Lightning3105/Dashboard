@@ -27,12 +27,13 @@
 			go () {
 				this.icon = 'sync'
 				this.sending = true
-				axios.get(window.APIROOT + this.data.url).then(response => {
+				axios.get(window.APIROOT + this.data.url).then(() => {
 					this.icon = this.data.icon
 					this.sending = false
 					EventBus.$emit("buttonclick", this.data.url);
 					if (this.data.background == 'getpower') {
 						this.getBackground()
+						setTimeout(() => this.getBackground(), 1000);
 						setTimeout(() => this.getBackground(), 3 * 1000);
 					}
 				}).catch(reason => {
@@ -46,7 +47,6 @@
 					axios.get(window.APIROOT + this.data.url + '/get').then(response => {
 						let colours = [response.data.main, response.data.led];
 						this.background = `linear-gradient(315deg, ${colours[1]} 0%, ${colours[0]} 74%)`;
-
 					})
 				}
 				else if (this.data.background == 'getpower'){

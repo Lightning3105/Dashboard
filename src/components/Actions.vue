@@ -32,7 +32,7 @@
 	.actions {
 		position: absolute;
 		margin-bottom: 25px;
-		margin-right: 22px;
+		margin-right: 25px;
 		right: 0;
 		bottom: 0;
 		width: 15%;

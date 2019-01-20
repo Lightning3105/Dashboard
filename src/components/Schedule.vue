@@ -78,7 +78,7 @@
 	position: absolute;
 	height: 60%;
 	margin-bottom: 25px;
-	margin-left: 40px;
+	margin-left: 25px;
 	overflow-x: auto;
 	overflow-y: hidden;
 	white-space: nowrap;

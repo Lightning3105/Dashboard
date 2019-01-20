@@ -1,13 +1,16 @@
 <template>
-  <div :class="{'parent': true, 'large': clockMode}">
-	<div class="black"></div>
-    <p class="time" v-text="currentTime"></p>
-    <p class="time seconds" v-text="seconds"></p>
-    <p class="time date" v-text="date"></p>
-	  <div class="bcontainer" v-if="clockMode">
-	  <action-button :data="{icon: 'power-off', url: '/dashboard/screen/toggle', background: 'ambient'}"></action-button>
-	  </div>
-  </div>
+	<div :class="{'parent': true, 'large': clockMode}">
+		<div class="black"></div>
+		<div class="main">
+			<p class="time" v-text="currentTime"></p>
+			<p class="time date" v-text="date"></p>
+		</div>
+			<p class="time seconds" v-text="seconds"></p>
+
+		<div class="bcontainer" v-if="clockMode">
+			<action-button :data="{icon: 'power-off', url: '/dashboard/screen/toggle', background: 'ambient'}"></action-button>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -37,7 +40,6 @@ export default {
     checkClockMode() {
       axios.get(window.APIROOT + "/dashboard/screen/get").then(response => {
         let brightness = response.data;
-        console.log("B", brightness, brightness == 1);
         if (brightness == 1) {
           this.clockMode = true;
         } else {
@@ -55,12 +57,12 @@ export default {
     this.currentTime = moment().format("h:mm");
     this.seconds = moment().format("ss");
     this.checkClockMode();
-    console.log(">>>", this.clockMode);
     setInterval(() => this.updateCurrentTime(), 1 * 1000);
     setInterval(() => this.checkClockMode(), 180 * 1000);
 
 	EventBus.$on('buttonclick', data => {
 		if (data == '/dashboard/screen/toggle'){
+			setTimeout(() => this.checkClockMode(), 100);
 			setTimeout(() => this.checkClockMode(), 3 * 1000);
 		}
 	})
@@ -74,7 +76,7 @@ export default {
   font-family: Roboto-Bold;
   font-size: 80px;
   margin-top: 25px;
-  margin-left: 40px;
+  margin-left: 25px;
   margin-bottom: 0;
   color: white;
   text-shadow: 0 0 15px rgba(50, 50, 50, 0.35);
@@ -85,6 +87,9 @@ export default {
   font-size: 22px;
   margin-left: 0;
   color: rgba(229, 229, 253, 0.794);
+	position: relative;
+	margin-left: 100%;
+	top: -75px;
 }
 
 .time.date {
@@ -94,31 +99,38 @@ export default {
   font-family: Roboto-light;
 }
 
-.parent.large > .time {
+.large > .main {
   margin-top: 0;
   margin-left: 0;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
-.parent.large > .time.date {
-  transform: translateY(-100%);
+.parent.large > .time.seconds {
+	display: none;
 }
 
-.large {
+.large > .main {
   transform: scale(4) translate(-50%, -50%);
   transform-origin: top left;
-  top: 50% !important;
+  top: 50%;
   left: 50%;
+	position: fixed;
 }
 
-.black {
+.large > .main > .time {
+	margin: 0;
+}
+
+.large > .main > .time.date {
+	margin-top: -10px;
+}
+
+.large > .black {
   position: absolute;
-  top: -10px;
-  left: -14px;
   height: 100vh;
   width: 100vw;
   background-color: black;
-  z-index: -1;
+  z-index: 0;
 }
 
 .parent {
@@ -127,10 +139,13 @@ export default {
 }
 
 	.bcontainer {
-		position: absolute;
-		right: -20px;
-		bottom: -5px;
-		width: 33px;
-		height: 13px;
+		position: fixed;
+		right: 10px;
+		bottom: 10px;
+		/*width: 33px;
+		height: 13px;*/
+		transform: scale(4);
+		transform-origin: bottom right;
+		height: 9.6px;
 	}
 </style>

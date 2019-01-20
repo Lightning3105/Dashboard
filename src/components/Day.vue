@@ -1,5 +1,5 @@
 <template>
-<div class="day" :style="addStyle">
+<div :class="{day: true, today: today}">
 <h1>{{title}}</h1>
 	<span class="date" v-if="monthday">{{monthday}}</span>
 	<div class="events">
@@ -15,8 +15,22 @@
 	export default {
 		name: "Day",
 		props: ['events', 'date'],
+		data () {
+			return {
+				today: false
+			}
+		},
 		components: {
 			Event
+		},
+		methods: {
+			testDay () {
+				this.today = (moment().format('YYYY/MM/DD') === this.date && this.events.length > 0)
+			}
+		},
+		created () {
+			this.testDay()
+			setInterval(() => this.testDay(), 60 * 60 * 1000 * 0.5);
 		},
 		computed: {
 			title (){
@@ -64,6 +78,10 @@
 	width: 24.3%; /*19.6%*/
 	height: 100%;
 	border-radius: 10px;
+}
+
+.today {
+	width: 50%;
 }
 
 	.day:not(:last-child) { margin-right:5px}
